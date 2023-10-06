@@ -3,6 +3,14 @@ import { Link,useNavigate } from "react-router-dom";
 
 const Login = () => {
     const navigate=useNavigate()
+
+    const base_url = process.env.REACT_APP_BASE_URL
+    // console.log(base_url)
+    const end_point = '/newLogin'
+    const fullUrl = base_url + end_point
+
+    console.log(fullUrl)
+
   // maintaining the state of form in component
   const [formData, setFormData] = useState({
     email: "",
@@ -21,7 +29,7 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/newLogin", {
+      const response = await fetch(fullUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -39,7 +47,9 @@ const Login = () => {
             email: "",
             password: "",
           });
-        token=data.token;
+        token=data.data[0]['token'];
+        localStorage.setItem('token',token)
+        // console.log(token)
         navigate('/home');
       } else {
         // Handle Login error

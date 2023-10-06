@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const Sidebar = styled.div`
   width: 300px;
   height: 100vh;
-  background-color: cyan;
+  background-color: #e0b463;
   position: fixed;
   left: 20px; /* Adjust the left margin as needed */
   // top: 10px;
@@ -15,14 +15,14 @@ const Sidebar = styled.div`
 const SearchContainer = styled.div`
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: #075e54;
   padding: 5px;
-  border-radius: 5px;
-  margin: 10px;
+  // border-radius: 5px;
+  // margin: 10px;
 `;
 
 const SearchButton = styled.button`
-  background-color: #075e54; /* Button background color */
+  background-color: #e0b463; /* Button background color */
   color: white;
   border: none;
   padding: 5px 10px;
@@ -78,11 +78,11 @@ const ChatInfo = styled.div`
 const UserName = styled.div`
   font-size: 19px;
   font-weight: bold;
-  color: blue;
+  color: #4a340d;
 `;
 
 const LastMessage = styled.div`
-  color: #888;
+  color: #756443;
   font-size: 14px;
 `;
 
@@ -92,6 +92,11 @@ const Timestamp = styled.div`
   text-align: right;
 `;
 
+const Separator = styled.div`
+  border-top: 1px solid #4a340d; /* Adjust color and thickness as needed */
+  // margin: 10px 0; /* Add margin as needed */
+`;
+
 
 
 const SidebarComponent = ({ responseData }) => {
@@ -99,9 +104,13 @@ const SidebarComponent = ({ responseData }) => {
   const [email,setEmail]=useState('')
   const [userExists,setUserExists]=useState(null)
 
+  const base_url = process.env.REACT_APP_BASE_URL
+  const end_point = "/search_user";
+  const fullUrl = base_url + end_point;
+
   const handleSearch = async () =>{
     try {
-        const response = await fetch("http://127.0.0.1:8000/search_user", {
+        const response = await fetch(fullUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -127,6 +136,7 @@ const SidebarComponent = ({ responseData }) => {
         <SearchBar value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Search contacts..."></SearchBar>
       </SearchContainer>
       <SidebarMenu>
+      <Separator/>
         {activeRooms.map((room) => (
           <Link
             to={`/chat/${room.room_id}`}
@@ -140,8 +150,10 @@ const SidebarComponent = ({ responseData }) => {
               </ChatInfo>
               <Timestamp>{formatTimestamp(room.timestamp)}</Timestamp>
             </ChatPreview>
+            <Separator/>
           </Link>
         ))}
+        
         {/* Rest of your sidebar items */}
       </SidebarMenu>
     </Sidebar>

@@ -4,6 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 const Signup = () => {
     const navigate = useNavigate();
 
+    const base_url = process.env.BASE_URL
+    const end_point = '/signUp'
+    const fullUrl = base_url + end_point
+
   // maintaining the state of form in component
   const [formData, setFormData] = useState({
     username: "",
@@ -21,8 +25,10 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log(formData)
+
     try {
-      const response = await fetch("http://127.0.0.1:8000/signUp", {
+      const response = await fetch(fullUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
