@@ -31,26 +31,6 @@ const Home = () => {
 
   const [resultData, setResultData] = useState(null);
 
-  // useEffect(() => {
-  //   fetch(fullUrl, {
-  //     method: 'GET',
-  //     headers:headers
-  //   })
-  //     .then((response) => {
-  //       if (!response.ok) {
-  //         throw new Error("Network response was not ok"); // Corrected this line
-  //       }
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       setResultData(data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Fetch error:", error);
-  //       setResultData(null);
-  //     });
-  // }, [fullUrl, headers]);
-
 
   useEffect(() => {
     const fetchData = async () => {
