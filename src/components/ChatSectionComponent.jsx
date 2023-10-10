@@ -1,5 +1,6 @@
 
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect, useState,useMemo } from 'react';
 import styled from 'styled-components';
 
 const ChatSection = styled.div`
@@ -70,14 +71,76 @@ const ChatMessage = styled.li`
 
 
 const ChatSectionComponent = ({chat_id}) => {
-  const [messages, setMessages] = useState([
-    'Hello there!',
-    'How are you?',
-    'This is Chatty App'
-    // Add more messages to the array
-  ]);
 
+
+  console.log(chat_id);
+
+  const raw_token = localStorage.getItem("token");
+  const headers = useMemo(() => {
+    const headers = {
+      'Authorization': `Bearer ${raw_token}`, // Use 'Bearer' or the appropriate prefix if required
+      'Content-Type': 'application/json',
+      // 'ngrok-skip-browser-warning': 'true' // Adjust the content type as needed
+    };
+    return headers
+  }, [raw_token]);
+
+  // console.log(raw_token)
+  const [messages, setMessages] = useState(null)
+
+  const url = 'http://fcd7-58-27-207-214.ngrok-free.app/'
+
+  const [isLoading,setIsLoading]=useState(true)
+
+
+
+
+  useEffect(()=>{
+    const fetchChat = async ()=>{
+      try{
+        const response = await axios.get(url,{
+          params: {
+            room_id:chat_id
+          },
+          headers:headers
+        })
+  
+        if (response.status!==200){
+          throw new Error('Network response was not ok in chatsection component');
+        }
+  
+        const data = response.data
+        setMessages(data)
+        if(data!==null){
+          setIsLoading(false)
+        }
+      } catch (error){
+        console.error('Axios error in chatSection component:', error);
+        setMessages(null)
+      }
+      
+    };
+
+    if (messages==null){
+      fetchChat()
+    }
+    
+
+  },[chat_id,headers,messages])
+
+  // console.log(messages)
   // console.log(chat_id);
+
+
+  // if(isLoading){
+  //   return (
+  //     <div>Loading...</div>
+  //   )
+  // }
+
+  // if(!chat_name){
+  //   chat_name = null
+  // }
 
   return (
     <ChatSection>
@@ -85,7 +148,7 @@ const ChatSectionComponent = ({chat_id}) => {
         <ChatTitle>{chat_id}</ChatTitle>
       </ChatHeader>
       <ChatMessageList>
-        {messages.map((message, index) => (
+        {isLoading ? (<div>Loading...</div>) : messages.map((message, index) => (
           <ChatMessage key={index}>{message}</ChatMessage>
         ))}
       </ChatMessageList>
