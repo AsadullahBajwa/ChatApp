@@ -4,8 +4,8 @@ import { Link,useNavigate } from "react-router-dom";
 const Login = () => {
     const navigate=useNavigate()
 
-    const base_url = process.env.REACT_APP_BASE_URL
-    // console.log(base_url)
+    // const base_url = process.env.REACT_APP_BASE_URL
+    const base_url ="http://127.0.0.1:8000"
     const end_point = '/newLogin'
     const fullUrl = base_url + end_point
 

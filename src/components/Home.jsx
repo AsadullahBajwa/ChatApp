@@ -1,61 +1,51 @@
-import React, { useEffect, useState,useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 // import SearchUser from './SearchUser'
 import SidebarComponent from "./SidebarComponent";
 import ChatSectionComponent from "./ChatSectionComponent";
-import { useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const Home = () => {
-  const base_url = process.env.REACT_APP_BASE_URL
-  const end_point = "/activeRooms/";
+  // const base_url = process.env.REACT_APP_BASE_URL
+  const base_url = "https://b7bb-58-27-207-214.ngrok-free.app/";
+  const end_point = "activeRooms/";
   const fullUrl = base_url + end_point;
-
-  console.log(fullUrl)
-
-  // const location = useLocation()
-  // const token = location.state.token;
-  // console.log(token)
 
   const raw_token = localStorage.getItem("token");
   console.log(raw_token);
 
-  
-
   const headers = useMemo(() => {
     const headers = {
-      'Authorization': `Bearer ${raw_token}`, // Use 'Bearer' or the appropriate prefix if required
-      'Content-Type': 'application/json', // Adjust the content type as needed
+      Authorization: `Bearer ${raw_token}`, // Use 'Bearer' or the appropriate prefix if required
+      "Content-Type": "application/json", // Adjust the content type as needed
     };
-    return headers
+    console.log("Headers: ", headers);
+    return headers;
   }, [raw_token]);
-  console.log(headers);
 
   const [resultData, setResultData] = useState(null);
-
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(fullUrl, {
-          method: 'GET',
-          headers: headers,
+          method: "GET",
+          headers:headers
         });
 
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
 
         const data = await response.json();
         setResultData(data);
       } catch (error) {
-        console.error('Fetch error:', error);
+        console.error("Fetch error:", error);
         setResultData(null);
       }
     };
 
     fetchData(); // Call the async function
-
-  }, [fullUrl, headers]);
-
+  }, [fullUrl, headers, raw_token]);
 
   console.log(resultData);
 
