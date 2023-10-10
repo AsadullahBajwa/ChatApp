@@ -9,7 +9,7 @@ const Login = () => {
     const end_point = '/newLogin'
     const fullUrl = base_url + end_point
 
-    console.log(fullUrl)
+    // console.log(fullUrl)
 
   // maintaining the state of form in component
   const [formData, setFormData] = useState({

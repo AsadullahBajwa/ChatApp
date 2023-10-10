@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Signup = () => {
     const navigate = useNavigate();
 
-    const base_url = process.env.BASE_URL
+    const base_url = process.env.REACT_APP_BASE_URL
     const end_point = '/signUp'
     const fullUrl = base_url + end_point
 
