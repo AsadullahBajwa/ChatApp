@@ -2,7 +2,9 @@ import React, { useEffect, useState,useMemo } from "react";
 // import SearchUser from './SearchUser'
 import SidebarComponent from "./SidebarComponent";
 import ChatSectionComponent from "./ChatSectionComponent";
+import ChatSectionComponent2 from "./ChatSectionComponent2";
 import { useParams} from "react-router-dom";
+import TestSocket from "./TestSocket";
 // import axios from "axios";
 
 const Home = () => {
@@ -179,12 +181,14 @@ const Home = () => {
   const { room_id } = useParams();
   // console.log(room_id)
 
+  
  
 
   return (
     <div>
+      {/* <TestSocket/> */}
       <SidebarComponent/>
-      <ChatSectionComponent chat_id={room_id} />
+      <ChatSectionComponent2 chat_id={room_id} />
       {/* <div>
         <h1>Chatty</h1>
       </div>

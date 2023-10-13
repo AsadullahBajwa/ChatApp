@@ -1,7 +1,9 @@
+import axios from "axios";
+import React, { useEffect, useState, useMemo,useRef } from "react";
+import styled from "styled-components";
+import ChatMessage from "./ChatMessage";
+// import Jwt from 'jsonwebtoken';
 
-import axios from 'axios';
-import React, { useEffect, useState,useMemo } from 'react';
-import styled from 'styled-components';
 
 const ChatSection = styled.div`
   width: 70%;
@@ -11,6 +13,7 @@ const ChatSection = styled.div`
   margin-left: 321px;
   top: 10px;
   background-color: #f2dfbb;
+  
 `;
 
 const ChatHeader = styled.div`
@@ -19,7 +22,7 @@ const ChatHeader = styled.div`
   align-items: center;
   background-color: #075e54;
   padding: 10px;
-//   border: 1px solid black;
+  //   border: 1px solid black;
   // background-color: cyan;
 `;
 
@@ -58,99 +61,103 @@ const SendButton = styled.button`
 const ChatMessageList = styled.ul`
   list-style-type: none;
   padding: 0;
+  max-height: 80vh; /* Set a maximum height for the SidebarMenu */
+  overflow-y: auto;
   flex: 1; /* Fill the remaining vertical space with chat messages */
-`;
-
-const ChatMessage = styled.li`
-  padding: 10px;
-//   background-color: #f0f0f0;
-  margin: 10px;
-  border-radius: 5px;
+  // max-width:0px;
 `;
 
 
 
-const ChatSectionComponent = ({chat_id}) => {
 
-
-  console.log(chat_id);
-
+const ChatSectionComponent = ({ chat_id }) => {
   const raw_token = localStorage.getItem("token");
   const headers = useMemo(() => {
     const headers = {
-      'Authorization': `Bearer ${raw_token}`, // Use 'Bearer' or the appropriate prefix if required
-      'Content-Type': 'application/json',
-      // 'ngrok-skip-browser-warning': 'true' // Adjust the content type as needed
+      Authorization: `Bearer ${raw_token}`,
+      "Content-Type": "application/json",
     };
-    return headers
+    return headers;
   }, [raw_token]);
 
-  // console.log(raw_token)
-  const [messages, setMessages] = useState(null)
 
-  const url = 'http://fcd7-58-27-207-214.ngrok-free.app/'
+  // const tokenDecoded = Jwt.decode(raw_token) 
 
-  const [isLoading,setIsLoading]=useState(true)
+  // console.log(tokenDecoded.user_id)
 
+  const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const chatContainerRef = useRef(null); // Create a ref for the chat container
 
+  const scrollToBottom = () => {
+    chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+  };
 
+  useEffect(() => {
+    chatContainerRef.current.scrollTo({
+      top: chatContainerRef.current.scrollHeight, // Scroll to the bottom
+      behavior: "smooth", // Optional: Add smooth scrolling animation
+    });
+    scrollToBottom();
+  }, [messages]);
 
-  useEffect(()=>{
-    const fetchChat = async ()=>{
-      try{
-        const response = await axios.get(url,{
-          params: {
-            room_id:chat_id
-          },
-          headers:headers
-        })
-  
-        if (response.status!==200){
-          throw new Error('Network response was not ok in chatsection component');
+  useEffect(() => {
+    if (chat_id) {
+      const fetchChat = async () => {
+        setIsLoading(true);
+        try {
+          const response = await axios.get(
+            `http://localhost:8000/msg/?room_id=${chat_id}`,
+            {
+              headers: headers,
+            }
+          );
+
+          if (response.status !== 200) {
+            throw new Error(
+              "Network response was not ok in chatsection component"
+            );
+          }
+
+          const data = response.data;
+          setMessages(data.messages);
+          setIsLoading(false);
+        } catch (error) {
+          console.error("Axios error in chatSection component:", error);
+          setMessages([]);
+          setIsLoading(false);
         }
-  
-        const data = response.data
-        setMessages(data)
-        if(data!==null){
-          setIsLoading(false)
-        }
-      } catch (error){
-        console.error('Axios error in chatSection component:', error);
-        setMessages(null)
-      }
-      
-    };
+      };
 
-    if (messages==null){
-      fetchChat()
+      fetchChat();
     }
-    
-
-  },[chat_id,headers,messages])
-
-  // console.log(messages)
-  // console.log(chat_id);
-
-
-  // if(isLoading){
-  //   return (
-  //     <div>Loading...</div>
-  //   )
-  // }
-
-  // if(!chat_name){
-  //   chat_name = null
-  // }
+    scrollToBottom();
+  }, [chat_id, headers]);
 
   return (
     <ChatSection>
       <ChatHeader>
-        <ChatTitle>{chat_id}</ChatTitle>
+        <ChatTitle>{chat_id ? chat_id : "No room selected"}</ChatTitle>
       </ChatHeader>
-      <ChatMessageList>
-        {isLoading ? (<div>Loading...</div>) : messages.map((message, index) => (
-          <ChatMessage key={index}>{message}</ChatMessage>
-        ))}
+      <ChatMessageList ref={chatContainerRef}>
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : (
+          messages.map((message, index) => (
+            <div key={index}>
+              <ChatMessage
+          key={index}
+          message={message.text}
+          sender={message.sender}
+          timestamp={message.timestamp}
+        />
+              {/* <ChatMessage />
+              <ChatMessage>{message.text}</ChatMessage>
+              <p>Sender: {message.sender}</p>
+              <p>Timestamp: {message.timestamp}</p> */}
+            </div>
+          ))
+        )}
       </ChatMessageList>
       <ChatInputWrapper>
         <ChatInput placeholder="Type a message..." />

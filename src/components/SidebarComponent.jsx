@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import React,{useState,useMemo,useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import axios from "axios";
+// import { Jwt } from 'jsonwebtoken';
 
 
 const Sidebar = styled.div`
@@ -105,11 +106,15 @@ const SidebarComponent = () => {
   // console.log(responseData)
 
   const raw_token = localStorage.getItem("token");
+
+  // const tokenDecoded = Jwt.decode(raw_token) 
+
+  // console.log(tokenDecoded)
   // console.log(raw_token)
 
   const headers = useMemo(() => {
     const headers = {
-      "access-control-allow-origin" : "*",
+      // "access-control-allow-origin" : "*",
       'Authorization': `Bearer ${raw_token}`, // Use 'Bearer' or the appropriate prefix if required
       'Content-Type': 'application/json',
       // 'ngrok-skip-browser-warning': 'true' // Adjust the content type as needed
@@ -120,7 +125,7 @@ const SidebarComponent = () => {
   const [resultData, setResultData] = useState(null);
   const [isLoading,setIsLoading]=useState(true)
 
-  const url = 'https://fcd7-58-27-207-214.ngrok-free.app/activeRooms/';
+  const url = 'http://localhost:8000/activeRooms/';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -243,10 +248,19 @@ const SidebarComponent = () => {
   }
 
 
-  
+  let Id_name
+  if(userExists){
+      Id_name = {
+        user_id:userExists.user_id,
+        user_name:userExists.user_name
+      }
+      console.log(Id_name)
+  }
 
 
   if(flag  && userExists.Exist){
+
+    
     // console.log(userExists.Exist)
     return (
       <Sidebar>
