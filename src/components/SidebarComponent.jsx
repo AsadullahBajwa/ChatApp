@@ -248,14 +248,14 @@ const SidebarComponent = () => {
   }
 
 
-  let Id_name
-  if(userExists){
-      Id_name = {
-        user_id:userExists.user_id,
-        user_name:userExists.user_name
-      }
-      console.log(Id_name)
-  }
+  // let Id_name
+  // if(userExists){
+  //     Id_name = {
+  //       user_id:userExists.user_id,
+  //       user_name:userExists.user_name
+  //     }
+  //     console.log(Id_name)
+  // }
 
 
   if(flag  && userExists.Exist){

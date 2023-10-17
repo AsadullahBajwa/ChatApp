@@ -8,6 +8,7 @@ const ChatMessageContainer = styled.div`
   margin: 5px;
   border-radius: 10px;
   max-width: 28%;
+  // height: 75px; 
 `;
 
 const MessageText = styled.p`
