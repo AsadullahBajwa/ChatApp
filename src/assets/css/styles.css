@@ -32,9 +32,11 @@ body,
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
+.form-holder.auth {
   display: grid;
   place-items: center;
+  height: 100vh; /* Set the height to the viewport height */
+  width: 100%; /* Set the width to 100% of the parent container */
   margin: 0;
   padding: 0 24px;
   background-image: url("../images/bg.svg");
@@ -44,8 +46,15 @@ body {
   font-family: "Euclid Circular A";
 }
 
+@media (min-width: 500px) {
+  .form-holder.auth {
+    padding: 0;
+  }
+}
+
+
 @media (width >= 500px) {
-  body {
+  .login {
     padding: 0;
   }
 }
@@ -102,6 +111,15 @@ body {
   translate: 0 -50%;
   color: rgba(255, 255, 255, 0.38);
 }
+.textbox span.password-toggle {
+  position: absolute;
+  left: inherit;
+  right: 16px;
+  cursor: pointer;
+}
+.textbox span.password-toggle:hover{
+  color: #aa0000;
+}
 
 .login-form input,
 .login-form button {
@@ -118,7 +136,7 @@ body {
   background: transparent;
   border: 2px solid rgba(255, 255, 255, 0.1);
   font-size: 18px;
-  padding: 0 20px 0 50px;
+  padding: 0 50px;
   color: inherit;
 }
 
