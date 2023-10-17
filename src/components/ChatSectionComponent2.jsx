@@ -191,7 +191,7 @@ const ChatSectionComponent = ({ chat_id }) => {
     <ChatSection>
       <ChatHeader>
         <ChatTitle>
-          {chat_id ? decodedToken.username || chat_id : "No room selected"}
+          {chat_id ? chat_id || chat_id : "No room selected"}
         </ChatTitle>
       </ChatHeader>
       <ChatMessageList ref={chatContainerRef}>
