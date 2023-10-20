@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo, useRef } from "react";
 import styled from "styled-components";
 import ChatMessage from "./ChatMessage";
 import jwtDecode from "jwt-decode";
+import { useLocation } from "react-router-dom";
 
 const ChatSection = styled.div`
   width: 70%;
@@ -55,6 +56,8 @@ const SendButton = styled.button`
 `;
 
 const ChatMessageList = styled.ul`
+  display:flex;
+  flex-direction:column;
   list-style-type: none;
   padding: 0;
   max-height: 80vh;
@@ -64,7 +67,7 @@ const ChatMessageList = styled.ul`
 
 
 
-const ChatSectionComponent = ({ chat_id }) => {
+const ChatSectionComponent = ({ chat_id,room_name }) => {
   const raw_token = localStorage.getItem("token");
   const decodedToken = jwtDecode(raw_token);
 
@@ -79,6 +82,9 @@ const ChatSectionComponent = ({ chat_id }) => {
   useEffect(() => {
     // WebSocket URL based on chat_id
     const wsUrl = `ws://localhost:8000/chat/${chat_id}/?${raw_token}`;
+
+    // const wsUrl = `ws://localhost:8000/ws/chat/${chat_id}/${room_name}/${decodedToken.id}/`;
+
 
     // Initialize WebSocket connection
     socketRef.current = new WebSocket(wsUrl);
@@ -126,6 +132,7 @@ const ChatSectionComponent = ({ chat_id }) => {
           console.log(revFormattedMessages);
 
           setMessages(revFormattedMessages);
+          
         } else {
           console.log("Data from websocket is empty");
         }
@@ -148,6 +155,7 @@ const ChatSectionComponent = ({ chat_id }) => {
     };
     
     };
+    
 
     return () => {
       // Close the WebSocket connection when the component unmounts
@@ -187,11 +195,15 @@ const ChatSectionComponent = ({ chat_id }) => {
     }
   };
 
+  const location = useLocation()
+  const user_details = location.state;
+  // console.log(user_details)
+
   return (
     <ChatSection>
       <ChatHeader>
         <ChatTitle>
-          {chat_id ? chat_id || chat_id : "No room selected"}
+          {chat_id ? room_name || chat_id : "No room selected"}
         </ChatTitle>
       </ChatHeader>
       <ChatMessageList ref={chatContainerRef}>

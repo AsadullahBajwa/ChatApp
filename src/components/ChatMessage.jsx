@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import jwtDecode from "jwt-decode";
+
 
 const ChatMessageContainer = styled.div`
   display: flex;
@@ -31,8 +33,16 @@ const Timestamp = styled.p`
 `;
 
 const ChatMessage = ({ message, sender, timestamp }) => {
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+  // console.log(token);
+
+  // console.log("decoded username:",decodedToken.username)
+  // console.log("sender:",sender)
+
+  
   return (
-    <ChatMessageContainer>
+    <ChatMessageContainer style={{ alignSelf: sender === decodedToken.username ? 'flex-end' : 'flex-start' }}>
       <SenderName>{sender}</SenderName>
       <MessageText>{message}</MessageText>
       <Timestamp>{formatTimestamp(timestamp)}</Timestamp>

@@ -178,7 +178,7 @@ const Home = () => {
 //   // Log the result data (you can use it for frontend display)
 //   console.log(resultData2);
 
-  const { room_id } = useParams();
+  const { room_id,room_name} = useParams();
   // console.log(room_id)
 
   
@@ -188,7 +188,7 @@ const Home = () => {
     <div>
       {/* <TestSocket/> */}
       <SidebarComponent/>
-      <ChatSectionComponent2 chat_id={room_id} />
+      <ChatSectionComponent2 chat_id={room_id} room_name={room_name}/>
       {/* <div>
         <h1>Chatty</h1>
       </div>
