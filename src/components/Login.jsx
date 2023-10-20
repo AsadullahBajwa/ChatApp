@@ -1,6 +1,7 @@
-import '../assets/css/styles.css';
+import '../assets/css/style.css';
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import  { FormButton } from  "./Styled-component/Buttons/Button";
 
 const Login = () => {
   const navigate = useNavigate()
@@ -106,8 +107,9 @@ const Login = () => {
               {showPassword ? "visibility" : "visibility_off"}
             </span>
           </div>
-          <button type="submit">LOGIN</button>
-          <Link to={`/forgot-pass/${token}`}>Forgot your credentials?</Link>
+          <FormButton type="submit">Login</FormButton>
+          <Link to={`/forgot-pass/${token}`}>Forgot your password?</Link>
+          <Link to={`/`}>Go Back</Link>
         </form>
       </div>
     </div>
