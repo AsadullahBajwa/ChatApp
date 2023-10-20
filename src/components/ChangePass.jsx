@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import  { FormButton } from  "./Styled-component/Buttons/Button";
 
 const ChangePass = () => {
   // maintaining the state of form in component
@@ -7,8 +8,24 @@ const ChangePass = () => {
     // username: "",
     email: "",
     password: "",
-    confirm_password:"",
+    confirm_password: "",
   });
+  
+  // show hide password function
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const togglePasswordVisibility = (field) => {
+    if (field === "password") {
+      setShowPassword(!showPassword);
+    } else if (field === "confirm_password") {
+      setShowConfirmPassword(!showConfirmPassword);
+    }
+  };
+
+  const passwordInputType = showPassword ? "text" : "password";
+  const confirmPasswordInputType = showConfirmPassword ? "text" : "password";
+
 
   // handling the changes in form feild
   const handleChange = (e) => {
@@ -34,11 +51,11 @@ const ChangePass = () => {
         console.log(data);
         alert(data.message);
         setFormData({
-            username: "",
-            email: "",
-            password: "",
-            confirm_password:"",
-          });
+          username: "",
+          email: "",
+          password: "",
+          confirm_password: "",
+        });
       } else {
         // Handle ChangePass error
         console.error("ChangePass failed");
@@ -49,49 +66,55 @@ const ChangePass = () => {
   };
 
   return (
-    <div
-    style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        background: "skyblue",
-        alignItems: "center",
-        border: "1px solid black",
-        padding: "20px",
-        maxWidth: "35%", // Adjust this value to control the maximum width
-        margin: "10% auto", // Center the div horizontally within its parent
-      }}
-    >
-      <h2>ChangePass</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-        />{" "}
-        <br />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-        />{" "}
-        <br />
-        <input
-          type="password"
-          name="confirm_password"
-          placeholder="Confirm Password"
-          value={formData.confirm_password}
-          onChange={handleChange}
-        />{" "}
-        <br />
-        <button type="submit">Update Password</button> <br />
-        
-      </form>
-      <Link to={'/login'}>Already have account? Login</Link>
+    <div className="form-holder auth">
+      <div class="login change-password">
+        <h2>Change Your Password</h2>
+        <form class="login-form">
+          <div class="textbox">
+            <input type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+            <span class="material-symbols-outlined">mail</span>
+          </div>
+          <div class="textbox">
+            <input
+              type={passwordInputType}
+              name="password"
+              placeholder="Password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <span class="material-symbols-outlined"> lock </span>
+            <span
+              className="material-symbols-outlined password-toggle"
+              onClick={() => togglePasswordVisibility("password")}
+            >
+              {showPassword ? "visibility" : "visibility_off"}
+            </span>
+          </div>
+          <div class="textbox">
+            <input
+              type={confirmPasswordInputType}
+              name="confirm_password"
+              placeholder="Confirm Password"
+              value={formData.confirm_password}
+              onChange={handleChange}
+            />
+            <span class="material-symbols-outlined"> lock </span>
+            <span
+              className="material-symbols-outlined password-toggle"
+              onClick={() => togglePasswordVisibility("confirm_password")}
+            >
+              {showConfirmPassword ? "visibility" : "visibility_off"}
+            </span>
+          </div>
+          <FormButton type="submit">Update Password</FormButton>
+          <span>Go back to <Link to={'/login'}>Login</Link></span>
+        </form>
+      </div>
     </div>
   );
 };
