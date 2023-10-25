@@ -1,0 +1,28 @@
+.search-bar {
+    border: 1px solid black;
+    width: 200px;
+    height: 100vh;
+    float: left;
+    position: fixed;
+    top: 70px;
+    left: 20px;
+  }
+  
+  .search-bar {
+    background-color: white;
+    padding: 10px;
+  }
+  
+  .search-bar input {
+    width: 100%;
+    border: none;
+    padding: 5px;
+  }
+  
+  .search-bar button {
+    margin-top: 10px;
+    background-color: #000;
+    color: white;
+    padding: 5px;
+  }
+  

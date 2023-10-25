@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import jwtDecode from "jwt-decode";
 
-
 const ChatMessageContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -11,7 +10,7 @@ const ChatMessageContainer = styled.div`
   border-radius: 10px;
   min-width: 28%;
   max-width: 50%;
-  // height: 75px; 
+  // height: 75px;
 `;
 
 const MessageText = styled.p`
@@ -32,17 +31,36 @@ const Timestamp = styled.p`
   margin: 0 0 10px;
 `;
 
+const DeleteIcon = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-self: flex-end;
+  // Add styling for the icon as needed
+`;
+
 const ChatMessage = ({ message, sender, timestamp }) => {
   const token = localStorage.getItem("token");
   const decodedToken = jwtDecode(token);
   // console.log(token);
 
+  const handleDeleteMessage = () => {
+    alert("Delete message button clicked")
+    // You can add your API call here to delete the message
+    // Make the API call and handle the response as needed
+  };
+
   // console.log("decoded username:",decodedToken.username)
   // console.log("sender:",sender)
 
-  
   return (
-    <ChatMessageContainer style={{ alignSelf: sender === decodedToken.username ? 'flex-end' : 'flex-start' }}>
+    <ChatMessageContainer
+      style={{
+        alignSelf: sender === decodedToken.username ? "flex-end" : "flex-start",
+        backgroundColor: "lightcyan",
+      }}
+    >
+      <DeleteIcon onClick={handleDeleteMessage}>Delete</DeleteIcon>
       <SenderName>{sender}</SenderName>
       <MessageText>{message}</MessageText>
       <Timestamp>{formatTimestamp(timestamp)}</Timestamp>
@@ -50,11 +68,11 @@ const ChatMessage = ({ message, sender, timestamp }) => {
   );
 };
 
-export default ChatMessage
+export default ChatMessage;
 
 function formatTimestamp(timestamp) {
-    const date = new Date(timestamp * 1000);
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
-    return `${hours}:${minutes}`;
-  }
+  const date = new Date(timestamp * 1000);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  return `${hours}:${minutes}`;
+}

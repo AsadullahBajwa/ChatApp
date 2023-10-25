@@ -106,10 +106,6 @@ const ChatSectionComponent = ({ chat_id,room_name }) => {
       });
       console.log("WebSocket connection is open");
       setIsLoading(false);
-      chatContainerRef.current.scrollTo({
-        top: chatContainerRef.current.scrollHeight,
-        behavior: "smooth",
-      });
     };
 
 
